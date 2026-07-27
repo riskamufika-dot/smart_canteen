@@ -22,7 +22,7 @@ const STORES = [
   { id: 3, name: 'Kantin Bu Nani', rating: 5, image: '/kantin bi nani.jpeg' },
   { id: 4, name: 'Kantin Teh Enci', rating: 5, image: '/kantin teh enci.jpeg' },
   { id: 5, name: 'Kantin Apih', rating: 5, image: '/kantin apih.jpeg' },
-  { id: 6, name: 'Kantin Pa Zaenal', rating: 5, image: '/kantin pa zaenal.jpeg' },
+  { id: 6, name: 'Kantin Pa Zaenal', rating: 5, image: '/kanten pa zaenal.jpeg' },
   { id: 7, name: 'Kantin Bu Joe', rating: 5, image: '/kantin bu joe.jpeg' },
   { id: 8, name: 'Kantin Hampura', rating: 5, image: '/kantin hampura.jpeg' },
   { id: 9, name: 'Kantin Mas Echo', rating: 5, image: '/kantin mas echo.jpeg' },
@@ -43,71 +43,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-white pb-20">
-      
-      {/* --- NAVBAR (DISESUAIKAN PERSIS GAMBAR 1) --- */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 sm:px-12 md:px-16">
-        <div className="flex w-full items-center justify-between py-4">
-          
-          {/* Logo Brand */}
-          <Link href="/home" className="text-2xl font-bold tracking-tight">
-            <span className="text-orange-500">Smart</span> <span className="text-gray-900">Canteen</span>
-          </Link>
-
-          {/* Menu Navigasi */}
-          <div className="hidden items-center gap-8 md:flex">
-            <Link 
-              href="/home" 
-              className={`text-base transition-colors ${
-                pathname === '/home' || pathname === '/'
-                  ? 'font-semibold text-orange-500 underline underline-offset-4' 
-                  : 'font-medium text-gray-700 hover:text-orange-500'
-              }`}
-            >
-              Home
-            </Link>
-
-            <Link 
-              href="/menu" 
-              className={`text-base transition-colors ${
-                pathname === '/menu' 
-                  ? 'font-semibold text-orange-500 underline underline-offset-4' 
-                  : 'font-medium text-gray-700 hover:text-orange-500'
-              }`}
-            >
-              Menu
-            </Link>
-
-            <Link 
-              href="/about" 
-              className={`text-base transition-colors ${
-                pathname === '/about' || pathname === '/aboutus'
-                  ? 'font-semibold text-orange-500 underline underline-offset-4' 
-                  : 'font-medium text-gray-700 hover:text-orange-500'
-              }`}
-            >
-              About
-            </Link>
-
-            <Link 
-              href="/riwayat" 
-              className={`text-base transition-colors ${
-                pathname === '/history' || pathname === '/riwayat'
-                  ? 'font-semibold text-orange-500 underline underline-offset-4' 
-                  : 'font-medium text-gray-700 hover:text-orange-500'
-              }`}
-            >
-              History
-            </Link>
-          </div>
-
-          {/* Tombol Logout */}
-          <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
-            <LogOut size={20} />
-          </Link>
-        </div>
-      </nav>
-
+    <div className="min-h-screen bg-[#FDFDFD] pb-20 w-full overflow-x-hidden">
       {/* --- MAIN CONTENT --- */}
       <main className="w-full mt-24 px-6 sm:px-12 md:px-16">
         
