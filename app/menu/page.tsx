@@ -204,36 +204,6 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] pb-20 w-full overflow-x-hidden">
-
-      {/* --- NAVBAR --- */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 sm:px-12 md:px-16">
-        <div className="flex w-full items-center justify-between py-4">
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => router.back()}
-              className="p-1.5 rounded-full hover:bg-gray-100 text-gray-700 transition-colors"
-            >
-              <ArrowLeft size={22} />
-            </button>
-            <Link href="/" className="text-2xl font-bold tracking-tight">
-              <span className="text-orange-500">Smart</span> <span className="text-gray-900">Canteen</span>
-            </Link>
-          </div>
-
-          <div className="hidden items-center gap-8 md:flex">
-            <Link href="/home" className="text-base font-medium text-gray-700 hover:text-orange-500 transition-colors">Home</Link>
-            <Link href="/menu" className="text-base font-semibold text-orange-500 underline underline-offset-4">Menu</Link>
-            <Link href="/aboutus" className="text-base font-medium text-gray-700 hover:text-orange-500 transition-colors">About</Link>
-            <Link href="/riwayat" className="text-base font-medium text-gray-700 hover:text-orange-500 transition-colors">History</Link>
-          </div>
-
-          <button className="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors">
-            <LogOut size={20} />
-          </button>
-        </div>
-      </nav>
-
       {/* --- MAIN CONTENT --- */}
       <main className="w-full mt-24 px-6 sm:px-12 md:px-16">
 
