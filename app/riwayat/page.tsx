@@ -1,5 +1,6 @@
 "use client";
 
+import SubHeader from '@/components/sub-header';
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ArrowLeft, Bell, Star } from "lucide-react";
@@ -109,18 +110,9 @@ export default function Riwayat() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 flex justify-center py-6">
       <div className="w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
-         
-        {/* === HEADER === */}
-        <header className="flex items-center justify-between pb-6 border-b border-gray-100 mb-6">
-          <button className="p-2 hover:bg-gray-100 rounded-full transition" aria-label="Kembali">
-            <ArrowLeft className="w-6 h-6 text-slate-700" />
-          </button>
-          <h1 className="text-xl font-bold text-slate-900">Riwayat</h1>
-          <button className="p-2 hover:bg-gray-100 rounded-full transition" aria-label="Notifikasi">
-            <Bell className="w-6 h-6 text-slate-700" />
-          </button>
-        </header>
-
+    
+     <SubHeader title="riwayat" backUrl="/home" />
+      
         {/* === DAFTAR KARTU RIWAYAT === */}
         <div className="space-y-6 flex-grow">
           {daftarRiwayat.map((item) => (
