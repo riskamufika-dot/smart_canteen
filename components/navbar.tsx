@@ -1,39 +1,78 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // 1. Import usePathname
+import { usePathname } from 'next/navigation';
+import { LogOut } from 'lucide-react';
 
 export default function Navbar() {
-  const pathname = usePathname(); // 2. Ambil path URL saat ini
+  const pathname = usePathname();
 
-  // 3. Daftar halaman yang TIDAK boleh ada navbar
-  const hideNavbarOn = ['/', '/signup']; 
-  // (Sesuaikan '/' kalau halaman login kamu ada di paling depan, atau ganti ke '/login')
+  // Daftar halaman yang TIDAK boleh menampilkan Navbar
+  const hiddenPaths = [
+    '/login',
+    '/signup',
+    '/aboutus',
+    '/riwayat',
+  
+  ];
 
-  // 4. Jika URL saat ini ada di daftar di atas, sembunyikan Navbar (return null)
-  if (hideNavbarOn.includes(pathname)) {
+  // Jika halaman saat ini ada di dalam daftar hiddenPaths, jangan tampilkan Navbar
+  if (hiddenPaths.includes(pathname)) {
     return null;
   }
 
+  const navLinks = [
+    { name: 'Home', href: '/home' },
+    { name: 'Menu', href: '/menu' },
+    { name: 'About', href: '/aboutus' },
+    { name: 'History', href: '/riwayat' },
+  ];
+
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
-      <div className="font-bold text-xl text-orange-500">
-        Smart Canteen
-      </div>
-      <div className="flex gap-6 items-center">
-        {/* Gunakan class Tailwind 'text-gray-900' atau 'text-black' agar teksnya HITAM */}
-        <Link href="/home" className="text-black font-medium hover:text-orange-500 transition">
-          Home
-        </Link>
-        <Link href="/menu" className="text-black font-medium hover:text-orange-500 transition">
-          Menu
-        </Link>
-        <Link href="/aboutus" className="text-black font-medium hover:text-orange-500 transition">
-          About
-        </Link>
-        <Link href="/riwayat" className="text-black font-medium hover:text-orange-500 transition">
-          History
-        </Link>
+    <nav className="w-full bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16 gap-1 sm:gap-4">
+          
+          {/* Logo */}
+          <Link 
+            href="/" 
+            className="flex flex-col sm:flex-row leading-tight font-bold text-xs sm:text-xl whitespace-nowrap shrink-0"
+          >
+            <span className="text-orange-500">Smart</span>
+            <span className="text-black sm:ml-1">Canteen</span>
+          </Link>
+
+          {/* Navigasi */}
+          <div className="flex items-center gap-2 sm:gap-6 md:gap-8">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`font-semibold text-xs sm:text-base whitespace-nowrap transition-colors duration-150 ${
+                    isActive ? 'text-orange-500' : 'text-black'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Logout */}
+          <div className="flex items-center shrink-0">
+            <Link
+              href="/login"
+              title="Keluar"
+              className="flex items-center text-black p-1 sm:p-2 rounded-lg"
+            >
+              <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+          </div>
+
+        </div>
       </div>
     </nav>
   );

@@ -142,8 +142,9 @@ export default function MenuPage() {
 
   return (
     <div className="min-h-screen bg-[#FDFDFD] pb-20 w-full overflow-x-hidden">
+      
       {/* --- MAIN CONTENT --- */}
-      <main className="w-full mt-24 px-6 sm:px-12 md:px-16">
+      <main className="w-full pt-6 px-6 sm:px-12 md:px-16">
 
         {/* BANNER HEADER */}
         <div className="relative w-full h-64 sm:h-72 md:h-80 overflow-hidden rounded-[36px] bg-gray-900 shadow-sm border border-gray-100">
