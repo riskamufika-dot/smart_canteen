@@ -108,11 +108,13 @@ export default function Riwayat() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex justify-center py-6">
-      <div className="w-full bg-white rounded-3xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
-    
-     <SubHeader title="riwayat" backUrl="/home" />
-      
+<div className="min-h-screen w-full bg-white p-4 sm:p-6 md:p-8 flex flex-col">
+
+     {/* 1. Header Riwayat */}
+        <div className="mb-6">
+                  <SubHeader title="Riwayat" showBack={true} showBell={true} titleAlign="center" />
+                </div>
+       
         {/* === DAFTAR KARTU RIWAYAT === */}
         <div className="space-y-6 flex-grow">
           {daftarRiwayat.map((item) => (
@@ -188,6 +190,5 @@ export default function Riwayat() {
         </div>
 
       </div>
-    </div>
   );
 }

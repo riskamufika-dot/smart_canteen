@@ -1,5 +1,6 @@
 "use client";
 
+import SubHeader from '@/components/sub-header';
 import React, { useState, useEffect } from "react";
 import { ArrowLeft, House, Utensils } from "lucide-react";
 
@@ -43,22 +44,11 @@ export default function Keranjang() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#f8f9fa] text-slate-800 flex justify-center">
-      <div className="w-full min-h-screen bg-white shadow-sm flex flex-col justify-between p-4">
-        
-        {/* === HEADER === */}
-        <header className="flex items-center justify-between pb-4 border-b border-gray-100">
-          <button className="p-1 hover:bg-gray-100 rounded-full transition" aria-label="Kembali">
-            <ArrowLeft className="w-6 h-6 text-slate-700" />
-          </button>
-          <h1 className="text-xl font-bold text-slate-900">Status Pesanan</h1>
-          <div className="flex items-center gap-3">
-            <button className="p-1 hover:bg-gray-100 rounded-full transition" aria-label="Home">
-              <House className="w-6 h-6 text-slate-700" />
-            </button>
-          </div>
-        </header>
-
+    <div className="min-h-screen w-full bg-white p-4 sm:p-6 md:p-8 flex flex-col">
+        {/* SubHeader */}
+                   <div className="mb-6">
+                     <SubHeader title="Status Pesanan" showBack={true} showHome={true} titleAlign="center" />
+                   </div>
         {/* === INFO PESANAN === */}
         <div className="flex justify-between items-start p-6 bg-orange-50 border border-orange-500 rounded-2xl mb-8 mt-4">
           <div>
@@ -157,6 +147,6 @@ export default function Keranjang() {
         </div>
 
       </div>
-    </div>
+    
   );
 }

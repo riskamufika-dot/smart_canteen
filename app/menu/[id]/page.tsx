@@ -1,5 +1,6 @@
 'use client';
 
+import SubHeader from '@/components/sub-header';
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Home, ShoppingCart, CheckCircle2 } from 'lucide-react';
@@ -149,33 +150,9 @@ export default function DetailMenuPage() {
     <div className="min-h-screen w-full bg-[#FDFDFD] flex flex-col items-center py-4 sm:py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-sm sm:max-w-xl md:max-w-3xl lg:max-w-4xl bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm p-4 sm:p-6 lg:p-8">
         
-        {/* HEADER */}
-        <header className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4 sm:mb-6">
-          <button
-            onClick={() => router.back()}
-            className="p-2 -ml-2 text-gray-800 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <ArrowLeft size={22} />
-          </button>
-
-          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 font-sans">
-            Detail Menu
-          </h1>
-
-          <div className="flex items-center gap-2 sm:gap-3 text-gray-800">
-            <Link href="/home" className="p-1.5 hover:text-orange-500 rounded-full">
-              <Home size={20} />
-            </Link>
-            <Link href="/keranjang" className="relative p-1.5 hover:text-orange-500 rounded-full">
-              <ShoppingCart size={20} />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-orange-500 text-black text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          </div>
-        </header>
+        <div className="mb-6">
+                          <SubHeader title="Riwayat" showBack={true} showBell={true} titleAlign="center" />
+                        </div>
 
         {/* MAIN CONTENT */}
         <main className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-10 items-start">
