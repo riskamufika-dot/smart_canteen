@@ -11,9 +11,21 @@ export default function NavbarWrapper() {
     '/login', 
     '/signup', 
     '/riwayat', 
-    '/aboutus' // Sesuaikan dengan nama folder kamu (misal: /tentang-kami)
+    '/aboutus',
+    '/menu', // Sesuaikan dengan nama folder kamu (misal: /tentang-kami)
   ];
 
+  // 2. Cek halaman statis
+  const isStaticDisabled = disableNavbarRoutes.includes(pathname);
+
+  // 3. Cek apakah jalurnya mengarah ke halaman detail menu (folder menu/[id])
+  // "/menu/" artinya cocok untuk URL seperti /menu/1, /menu/2, /menu/nasi-goreng, dll.
+  const isDetailMenuPage = pathname.startsWith('/menu/');
+
+  // Sembunyikan Navbar jika berada di salah satu halaman tersebut
+  if (isStaticDisabled || isDetailMenuPage) {
+    return null;
+  }
   // Sembunyikan Navbar utama jika rute cocok
   if (disableNavbarRoutes.includes(pathname)) {
     return null;

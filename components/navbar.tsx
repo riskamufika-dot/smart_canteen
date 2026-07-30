@@ -8,17 +8,25 @@ import { LogOut } from 'lucide-react';
 export default function Navbar() {
   const pathname = usePathname();
 
-  // Daftar halaman yang TIDAK boleh menampilkan Navbar
-  const hiddenPaths = [
+  // 1. Path persis (exact match) yang ingin disembunyikan
+  const hiddenExactPaths = [
     '/login',
     '/signup',
     '/aboutus',
     '/riwayat',
-  
+    '/keranjang',
+    '/status-pesanan',
   ];
 
-  // Jika halaman saat ini ada di dalam daftar hiddenPaths, jangan tampilkan Navbar
-  if (hiddenPaths.includes(pathname)) {
+  // 2. Cek apakah pathname saat ini persis sama dengan salah satu hiddenExactPaths
+  const isExactHidden = hiddenExactPaths.includes(pathname);
+
+  // 3. Cek apakah pathname diawali dengan /menu/ (khusus halaman detail seperti /menu/1, /menu/2, dll.)
+  // Catatan: Jika halaman utama daftar menu ada di /menu, ini HANYA menyembunyikan halaman detailnya (/menu/...)
+  const isMenuDetailHidden = pathname.startsWith('/menu/');
+
+  // Jika cocok dengan salah satu kondisi di atas, sembunyikan Navbar
+  if (isExactHidden || isMenuDetailHidden) {
     return null;
   }
 

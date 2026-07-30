@@ -1,5 +1,6 @@
 'use client';
 
+import SubHeader from '@/components/sub-header';
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, Star, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';

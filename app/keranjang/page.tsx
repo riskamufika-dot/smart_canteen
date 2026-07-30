@@ -1,5 +1,6 @@
 "use client";
 
+import SubHeader from '@/components/sub-header';
 import React, { useState } from "react";
 import {Clock,ChevronDown,CircleDollarSign,CircleAlert, ArrowLeft,House,Trash2  } from "lucide-react";
 
@@ -74,27 +75,11 @@ export default function Keranjang() {
   ];
 
   return (
-    <div className="w-full min-h-screen bg-[#f8f9fa] text-slate-800 flex justify-center">
-      {/* Container utama dengan max-width agar responsif mobile/tablet */}
-      <div className="w-full min-h-screen  bg-white shadow-sm flex flex-col justify-between p-4">
-        
-        {/* === HEADER === */}
-        <header className="flex items-center justify-between pb-4 border-b border-gray-100">
-          <button className="p-1 hover:bg-gray-100 rounded-full transition" aria-label="Kembali">
-            <ArrowLeft className="w-6 h-6 text-slate-700" />
-          </button>
-          
-          <h1 className="text-xl font-bold text-slate-900">Keranjang</h1>
-          
-          <div className="flex items-center gap-3">
-            <button className="p-1 hover:bg-gray-100 rounded-full transition" aria-label="Home">
-              <House className="w-6 h-6 text-slate-700" />
-            </button>
-            <button onClick={handleClearCart} className="p-1 hover:bg-red-50 rounded-full transition" aria-label="Hapus Semua">
-              <Trash2 className="w-6 h-6 text-slate-700" />
-            </button>
-          </div>
-        </header>
+    <div className="min-h-screen w-full bg-white p-4 sm:p-6 md:p-8 flex flex-col">  
+   {/* SubHeader */}
+           <div className="mb-6">
+             <SubHeader title="Keranjang" showBack={true} showHome={true} showTrash={true} titleAlign="center" />
+           </div>
 
         {/* === ISI KONTEN === */}
         <main className="flex-1 py-4 space-y-5 overflow-y-auto">
@@ -257,6 +242,6 @@ export default function Keranjang() {
         </footer>
 
       </div>
-    </div>
+  
   );
 }
