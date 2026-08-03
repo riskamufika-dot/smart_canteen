@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Star, Plus, LogOut, Search } from 'lucide-react';
 import Link from 'next/link';
 
@@ -10,43 +10,19 @@ interface MenusRepsonse {
     data: Array<{
       id: number;
       documentId: string;
-      name: string;
-      category: string;
-      price: number;
-      stock: number;
-      ketersediaan: string;
-      description: string;
-      slug: any;
-      createdAt: string;
-      updatedAt: string;
-      publishedAt: string;
-      image: {
-        id: number;
-        documentId: string;
-        name: string;
-        alternativeText: any;
-        caption: any;
-        focalPoint: any;
-        width: number;
-        height: number;
-        formats: {
-          large: { url: string };
-          small: { url: string };
-          medium: { url: string };
-          thumbnail: { url: string };
-        };
-        url: string;
-      };
-      tenant: {
-        id: number;
-        documentId: string;
-        name: string;
-        rating: number;
-        slug: any;
-        createdAt: string;
-        updatedAt: string;
-        publishedAt: string;
-      };
+      name?: string;
+      category?: string;
+      price?: number;
+      stock?: number;
+      ketersediaan?: string;
+      description?: string;
+      slug?: any;
+      createdAt?: string;
+      updatedAt?: string;
+      publishedAt?: string;
+      image?: any;
+      attributes?: any;
+      tenant?: any;
     }>;
     meta: {
       pagination: {
@@ -63,11 +39,16 @@ export default function MenuPage() {
   const [data, setData] = useState<MenusRepsonse['res'] | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [activeSection, setActiveSection] = useState<number>(1);
+  // 1. Membaca nomor page dari URL jika pengguna kembali dari halaman detail
+  const pageParam = searchParams?.get('page');
+  const initialSection = pageParam ? Math.min(Math.max(Number(pageParam), 1), 4) : 1;
+
+  const [activeSection, setActiveSection] = useState<number>(initialSection);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  // 1. Ambil Data dari Database Strapi
+  // Ambil Data dari Database Strapi
   useEffect(() => {
     async function getAboutData() {
       setLoading(true);
@@ -86,6 +67,46 @@ export default function MenuPage() {
     getAboutData();
   }, []);
 
+  // Update activeSection jika query URL berubah
+  useEffect(() => {
+    if (pageParam) {
+      setActiveSection(Number(pageParam));
+    }
+  }, [pageParam]);
+
+  // Helper Ambil Nama Menu Aman (Strapi v4/v5/Flat)
+  const getMenuName = (menu: any) => {
+    if (!menu) return 'Menu Kantin';
+    const attr = menu.attributes || menu;
+    return attr.name || attr.nama || 'Menu Kantin';
+  };
+
+  // Helper Ambil Harga Menu Aman
+  const getMenuPrice = (menu: any) => {
+    if (!menu) return 0;
+    const attr = menu.attributes || menu;
+    return Number(attr.price || attr.harga || 0);
+  };
+
+  // Helper URL Gambar Aman
+  const getImageUrl = (menu: any) => {
+    if (!menu) return '/placeholder.jpeg';
+    const attr = menu.attributes || menu;
+    const imageObj = attr.image || attr.foto || attr.gambar || menu.image;
+
+    if (!imageObj) return '/placeholder.jpeg';
+
+    const imgPath =
+      imageObj.url ||
+      imageObj.data?.attributes?.url ||
+      imageObj.attributes?.url ||
+      imageObj.formats?.medium?.url ||
+      imageObj.formats?.small?.url;
+
+    if (!imgPath) return '/placeholder.jpeg';
+    return imgPath.startsWith('http') ? imgPath : `http://localhost:1337${imgPath}`;
+  };
+
   // 2. Filter Search pada Seluruh Data Database
   const filteredMenus = useMemo(() => {
     if (!data?.data) return [];
@@ -94,8 +115,8 @@ export default function MenuPage() {
     if (!query) return data.data;
 
     return data.data.filter((menu) => {
-      if (!menu.name) return false;
-      const cleanMenuName = menu.name.toLowerCase().replace(/\s+/g, ' ');
+      const name = getMenuName(menu);
+      const cleanMenuName = name.toLowerCase().replace(/\s+/g, ' ');
       const cleanQuery = query.replace(/\s+/g, ' ');
 
       return cleanMenuName.includes(cleanQuery);
@@ -121,23 +142,15 @@ export default function MenuPage() {
     return [];
   }, [filteredMenus, activeSection, searchTerm]);
 
-  // Handle navigasi ke halaman detail saat tombol + diklik
+  // Navigasi ke Halaman Detail Sambil Membawa Parameter Page
   const handleGoToDetail = (menu: any) => {
-  const targetId = menu.documentId || menu.id;
-  router.push(`/menu/${targetId}`);
-};
+    const targetId = menu.documentId || menu.id;
+    router.push(`/menu/${targetId}?page=${activeSection}`);
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     setActiveSection(1);
-  };
-
-  // Helper untuk mendapatkan URL Gambar secara aman
-  const getImageUrl = (imageObj: any) => {
-    if (!imageObj) return '/placeholder.jpeg';
-    const imgPath = imageObj.url || imageObj.formats?.medium?.url || imageObj.formats?.small?.url;
-    if (!imgPath) return '/placeholder.jpeg';
-    return imgPath.startsWith('http') ? imgPath : `http://localhost:1337${imgPath}`;
   };
 
   return (
@@ -195,46 +208,56 @@ export default function MenuPage() {
               Memuat menu...
             </div>
           ) : paginatedMenus.length > 0 ? (
-            paginatedMenus.map((menu) => (
-              <div
-                key={menu.id}
-                className="flex items-center gap-4 rounded-[28px] border border-gray-100 bg-white p-4 shadow-sm transition-all hover:shadow-md"
-              >
-                {/* Foto Makanan */}
-                <div className="h-28 w-28 sm:h-32 sm:w-32 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100">
-                  <img
-                    src={getImageUrl(menu.image)}
-                    alt={menu.name}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </div>
+            paginatedMenus.map((menu) => {
+              const name = getMenuName(menu);
+              const price = getMenuPrice(menu);
+              const imgUrl = getImageUrl(menu);
 
-                {/* Info Makanan */}
-                <div className="flex flex-grow flex-col justify-between py-1 h-full min-w-0">
-                  <div>
-                    <h4 className="text-base sm:text-lg font-serif font-medium text-gray-800 truncate">{menu.name}</h4>
-                    <p className="text-sm sm:text-base font-bold text-gray-900 mt-0.5">
-                      Rp {menu.price ? menu.price.toLocaleString('id-ID') : 0}
-                    </p>
-                    <div className="mt-1.5 flex gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={15} fill="#FFD700" className="text-yellow-400" />
-                      ))}
+              return (
+                <div
+                  key={menu.id}
+                  className="flex items-center gap-4 rounded-[28px] border border-gray-100 bg-white p-4 shadow-sm transition-all hover:shadow-md min-h-[140px]"
+                >
+                  {/* Foto Makanan */}
+                  <div className="h-28 w-28 sm:h-32 sm:w-32 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-100">
+                    <img
+                      src={imgUrl}
+                      alt={name}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+
+                  {/* Info Makanan */}
+                  <div className="flex flex-grow flex-col justify-between py-1 h-full min-w-0">
+                    <div>
+                      <h4 className="text-base sm:text-lg font-serif font-medium text-gray-800 line-clamp-2 leading-snug break-words">
+                        {name}
+                      </h4>
+                      {/* HARGA DIKUNCI whitespace-nowrap AGAR 'Rp' TIDAK TERPISAH */}
+                      <p className="text-sm sm:text-base font-bold text-gray-900 mt-1 whitespace-nowrap">
+                        Rp {price.toLocaleString('id-ID')}
+                      </p>
+                      <div className="mt-1.5 flex gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={15} fill="#FFD700" className="text-yellow-400" />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end mt-2">
+                      {/* TOMBOL PLUS */}
+                      <button
+                        onClick={() => handleGoToDetail(menu)}
+                        className="rounded-xl bg-orange-500 p-2 text-black shadow-md hover:bg-orange-600 transition-colors active:scale-95 flex items-center justify-center"
+                        title="Lihat Detail Menu"
+                      >
+                        <Plus size={18} />
+                      </button>
                     </div>
                   </div>
-
-                  <div className="flex justify-end mt-2">
-                    {/* TOMBOL PLUS: Mengarahkan ke Halaman Detail Menu */}
-                    <button
-                    onClick={() => handleGoToDetail(menu)}
-                    className="rounded-xl bg-orange-500 p-2 text-black shadow-md hover:bg-orange-600 transition-colors active:scale-95"
-                    >
-                      <Plus size={18} />
-                      </button>
-                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="col-span-2 text-center py-10 text-gray-500">
               Menu tidak ditemukan.
@@ -246,7 +269,11 @@ export default function MenuPage() {
         {searchTerm.trim() === '' && (
           <div className="mt-12 flex items-center justify-center gap-2">
             <button
-              onClick={() => setActiveSection((prev) => Math.max(prev - 1, 1))}
+              onClick={() => {
+                const nextSec = Math.max(activeSection - 1, 1);
+                setActiveSection(nextSec);
+                router.push(`/menu?page=${nextSec}`);
+              }}
               disabled={activeSection === 1}
               className="px-2 py-1 text-sm text-gray-500 hover:text-black disabled:opacity-30 transition-colors"
             >
@@ -259,6 +286,7 @@ export default function MenuPage() {
                 onClick={() => {
                   setActiveSection(sectionNum);
                   setSearchTerm('');
+                  router.push(`/menu?page=${sectionNum}`);
                 }}
                 className={`h-9 w-9 rounded-full text-xs font-semibold transition-all ${
                   activeSection === sectionNum
@@ -271,7 +299,11 @@ export default function MenuPage() {
             ))}
 
             <button
-              onClick={() => setActiveSection((prev) => Math.min(prev + 1, 4))}
+              onClick={() => {
+                const nextSec = Math.min(activeSection + 1, 4);
+                setActiveSection(nextSec);
+                router.push(`/menu?page=${nextSec}`);
+              }}
               disabled={activeSection === 4}
               className="px-2 py-1 text-sm text-gray-500 hover:text-black disabled:opacity-30 transition-colors"
             >

@@ -1,6 +1,6 @@
 import "./globals.css";
-import Navbar from "../components/navbar"; // Sesuaikan 'navbar' huruf kecil sesuai nama file kamu
-import { CartProvider } from "./context/CartContext"; // Impor CartProvider
+import Navbar from "../components/navbar";
+import { CartProvider } from "./context/CartContext";
 
 export default function RootLayout({
   children,
@@ -9,14 +9,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
-      <body className="bg-gray-50 min-h-screen">
-        {/* Bungkus dengan CartProvider di sini */}
+      {/* Tambahkan m-0 p-0 overflow-x-hidden agar tidak ada whitespace/gap samping */}
+      <body className="bg-white w-full min-h-screen m-0 p-0 overflow-x-hidden font-sans text-gray-900 antialiased">
         <CartProvider>
-          {/* Navbar dipasang di paling atas */}
           <Navbar />
 
-          {/* Tampilan halaman lain akan dirender di sini */}
-          <main>{children}</main>
+          {/* KUNCI: main diberi class w-full min-h-screen agar konten di dalamnya melebar 100% */}
+          <main className="w-full min-h-screen m-0 p-0">{children}</main>
         </CartProvider>
       </body>
     </html>
