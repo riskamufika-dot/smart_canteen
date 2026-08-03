@@ -3,81 +3,136 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface CartItem {
-  id: string | number;
+  id: number | string;
   documentId?: string;
   name: string;
   price: number;
   quantity: number;
   note?: string;
   image?: string;
+  selected?: boolean; // Status centang (true/false)
 }
 
 interface CartContextType {
-  cart: CartItem[];
+  cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
-  updateQuantity: (id: string | number, delta: number) => void;
+  removeFromCart: (id: number | string) => void;
+  updateQuantity: (id: number | string, delta: number) => void;
+  toggleSelectItem: (id: number | string) => void;
+  toggleSelectAll: () => void;
+  clearSelectedItems: () => void;
   clearCart: () => void;
   totalItems: number;
+  totalPrice: number;
+  selectedItems: CartItem[];
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
+  // Load keranjang dari localStorage saat dibuka
   useEffect(() => {
     const savedCart = localStorage.getItem('smart_canteen_cart');
     if (savedCart) {
       try {
-        setCart(JSON.parse(savedCart));
+        setCartItems(JSON.parse(savedCart));
       } catch (e) {
-        console.error('Gagal memuat keranjang', e);
+        console.error('Failed to parse cart', e);
       }
     }
   }, []);
 
+  // Simpan keranjang ke localStorage setiap ada perubahan
   useEffect(() => {
-    localStorage.setItem('smart_canteen_cart', JSON.stringify(cart));
-  }, [cart]);
+    localStorage.setItem('smart_canteen_cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (newItem: CartItem) => {
-    setCart((prevCart) => {
-      const existingIndex = prevCart.findIndex((item) => item.id === newItem.id);
+    setCartItems((prevItems) => {
+      const existingIndex = prevItems.findIndex((i) => i.id === newItem.id);
       if (existingIndex > -1) {
-        const updated = [...prevCart];
+        const updated = [...prevItems];
         updated[existingIndex].quantity += newItem.quantity;
-        if (newItem.note) {
-          updated[existingIndex].note = newItem.note;
-        }
+        if (newItem.note) updated[existingIndex].note = newItem.note;
         return updated;
       }
-      return [...prevCart, newItem];
+      // Item baru otomatis tercentang (selected: true)
+      return [...prevItems, { ...newItem, selected: true }];
     });
   };
 
-  const updateQuantity = (id: string | number, delta: number) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((item) => {
-          if (item.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
+  const removeFromCart = (id: number | string) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const updateQuantity = (id: number | string, delta: number) => {
+    setCartItems((prev) =>
+      prev.map((item) => {
+        if (item.id === id) {
+          const newQty = item.quantity + delta;
+          return newQty > 0 ? { ...item, quantity: newQty } : item;
+        }
+        return item;
+      })
     );
   };
 
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem('smart_canteen_cart');
+  // Toggle centang 1 item
+  const toggleSelectItem = (id: number | string) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, selected: !item.selected } : item
+      )
+    );
   };
 
-  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+  // Toggle centang semua item
+  const toggleSelectAll = () => {
+    const allSelected = cartItems.every((item) => item.selected);
+    setCartItems((prev) =>
+      prev.map((item) => ({ ...item, selected: !allSelected }))
+    );
+  };
+
+  // Hapus HANYA item yang dicentang setelah checkout
+  const clearSelectedItems = () => {
+    setCartItems((prev) => prev.filter((item) => !item.selected));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  // Item-item yang sedang dicentang
+  const selectedItems = cartItems.filter((item) => item.selected ?? true);
+
+  // Total quantity item tercentang
+  const totalItems = selectedItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Total harga item tercentang
+  const totalPrice = selectedItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateQuantity, clearCart, totalItems }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        toggleSelectItem,
+        toggleSelectAll,
+        clearSelectedItems,
+        clearCart,
+        totalItems,
+        totalPrice,
+        selectedItems,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
@@ -86,7 +141,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart harus digunakan dalam CartProvider');
+    throw new Error('useCart must be used within a CartProvider');
   }
   return context;
 };
