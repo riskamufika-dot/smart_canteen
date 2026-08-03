@@ -27,13 +27,13 @@ export default function AuthPage() {
       if (isSignUp) {
         // --- PROSES SIGN UP ---
         const res = await fetch(`${STRAPI_URL}/api/auth/local/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-        username: `${fullName} (${kelas})`, // Hasil: "imelda novianti (XII PPLG 4)"
-        email: email,
-        password: password,
-        }),
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: `${fullName} (${kelas})`, // Hasil: "imelda novianti (XII PPLG 4)"
+            email: email,
+            password: password,
+          }),
         });
 
         const data = await res.json();
@@ -71,53 +71,64 @@ export default function AuthPage() {
 
   return (
     <div 
-      className="flex min-h-screen items-center justify-center bg-cover bg-center p-4"
+      className="flex min-h-screen items-center justify-center bg-cover bg-center p-4 sm:p-6"
       style={{ backgroundImage: "url('/kantin.jpeg')" }} 
     >
-      <div className="w-full max-w-md rounded-3xl bg-black/40 p-8 backdrop-blur-md text-white shadow-2xl border border-white/20">
+      {/* Background Overlay Hitam untuk Kontras Layar */}
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-xs" />
+
+      {/* Main Auth Card */}
+      <div className="relative z-10 w-full max-w-sm sm:max-w-md rounded-3xl bg-black/50 p-6 sm:p-8 backdrop-blur-md text-white shadow-2xl border border-white/20">
         
         {/* Logo & Header */}
         <div className="text-center mb-6">
-          <div className="mx-auto mb-4 flex justify-center">
-            <img src="/logo.png" alt="Logo Smart Canteen" 
-            className="h-30 w-30 object-contain rounded-2xl"/>
-           </div>
-          <h1 className="text-2xl font-serif font-bold tracking-wide">Welcome to Our</h1>
-          <p className="text-lg font-serif text-slate-200">Smart Canteen</p>
+          <div className="mx-auto mb-3 flex justify-center">
+            <img 
+              src="/logo.png" 
+              alt="Logo Smart Canteen" 
+              className="h-20 w-20 sm:h-24 sm:w-24 object-contain rounded-2xl drop-shadow-md"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+            />
+          </div>
+          <h1 className="text-xl sm:text-2xl font-serif font-bold tracking-wide">Welcome to Our</h1>
+          <p className="text-base sm:text-lg font-serif text-slate-200">Smart Canteen</p>
         </div>
 
+        {/* Error Notification */}
         {errorMsg && (
-          <div className="mb-4 rounded-xl bg-red-500/80 p-3 text-center text-xs text-white">
+          <div className="mb-4 rounded-xl bg-red-500/80 p-3 text-center text-xs sm:text-sm text-white border border-red-400">
             {errorMsg}
           </div>
         )}
 
         {/* Form Auth */}
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           {isSignUp && (
             <>
               {/* Input Full Name */}
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <User className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Full Name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full rounded-xl bg-white p-2.5 pl-10 text-sm text-slate-800 outline-none placeholder:text-slate-400"
+                  className="w-full rounded-xl bg-white p-3 pl-10 text-xs sm:text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-orange-400 transition-all"
                   required
                 />
               </div>
 
               {/* Input Class */}
               <div className="relative">
-                <BookOpen className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <BookOpen className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Class"
                   value={kelas}
                   onChange={(e) => setKelas(e.target.value)}
-                  className="w-full rounded-xl bg-white p-2.5 pl-10 text-sm text-slate-800 outline-none placeholder:text-slate-400"
+                  className="w-full rounded-xl bg-white p-3 pl-10 text-xs sm:text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-orange-400 transition-all"
                   required
                 />
               </div>
@@ -126,26 +137,26 @@ export default function AuthPage() {
 
           {/* Input Email */}
           <div className="relative">
-            <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
             <input
               type="email"
               placeholder="E-Mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl bg-white p-2.5 pl-10 text-sm text-slate-800 outline-none placeholder:text-slate-400"
+              className="w-full rounded-xl bg-white p-3 pl-10 text-xs sm:text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-orange-400 transition-all"
               required
             />
           </div>
 
           {/* Input Password */}
           <div className="relative">
-            <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            <Lock className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
             <input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl bg-white p-2.5 pl-10 text-sm text-slate-800 outline-none placeholder:text-slate-400"
+              className="w-full rounded-xl bg-white p-3 pl-10 text-xs sm:text-sm text-slate-800 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-orange-400 transition-all"
               required
             />
           </div>
@@ -154,30 +165,44 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-orange-500 py-2.5 text-sm font-semibold text-white transition-all hover:bg-orange-600 shadow-md"
+            className="w-full rounded-xl bg-orange-500 py-3 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-orange-600 active:scale-[0.98] shadow-md disabled:opacity-70 mt-2"
           >
             {loading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Login'}
           </button>
         </form>
 
         {/* Footer Link / Switch mode */}
-        <div className="mt-4 text-center text-xs text-slate-200">
+        <div className="mt-5 text-center text-xs text-slate-200 space-y-2">
           {isSignUp ? (
             <p>
               Already have an account?{' '}
-              <button onClick={() => setIsSignUp(false)} className="font-semibold text-orange-400 hover:underline">
+              <button 
+                type="button"
+                onClick={() => {
+                  setErrorMsg('');
+                  setIsSignUp(false);
+                }} 
+                className="font-semibold text-orange-400 hover:underline inline-block"
+              >
                 Login
               </button>
             </p>
           ) : (
             <p>
               Don't Have an Account?{' '}
-              <button onClick={() => setIsSignUp(true)} className="font-semibold text-orange-400 hover:underline">
+              <button 
+                type="button"
+                onClick={() => {
+                  setErrorMsg('');
+                  setIsSignUp(true);
+                }} 
+                className="font-semibold text-orange-400 hover:underline inline-block"
+              >
                 Sign Up
               </button>
             </p>
           )}
-          <p className="mt-2 text-slate-300">
+          <p className="text-slate-300 pt-1">
             Need Some Help? <a href="#" className="text-orange-400 hover:underline">Contact Admin</a>
           </p>
         </div>

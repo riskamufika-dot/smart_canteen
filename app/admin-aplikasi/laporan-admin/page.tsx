@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { LogOut, Users } from 'lucide-react';
+import { LogOut, Users, Utensils } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LaporanAdmin() {
@@ -15,25 +15,41 @@ export default function LaporanAdmin() {
   ];
 
   return (
-    <div className="flex min-h-screen bg-slate-100 p-8 text-slate-800">
-      <div className="mx-auto flex w-full max-w-6xl overflow-hidden rounded-3xl bg-white shadow-xl">
+    <div className="flex min-h-screen bg-slate-100 p-3 sm:p-6 lg:p-8 text-slate-800">
+      <div className="mx-auto flex w-full max-w-6xl flex-col lg:flex-row overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl">
         
-        {/* ================= SIDEBAR ================= */}
-        <aside className="flex w-64 flex-col justify-between border-r border-slate-100 p-6">
+        {/* ================= SIDEBAR / HEADER NAV ================= */}
+        <aside className="flex w-full lg:w-64 flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-100 p-4 sm:p-6">
           <div>
             {/* Logo */}
-            <div className="mb-8 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500 text-white font-bold">
-                🍽️
+            <div className="mb-8 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <img 
+                  src="/logo.png" 
+                  alt="Smart Canteen Logo" 
+                  className="h-10 w-10 object-contain rounded-xl"
+                  onError={(e) => {
+                    (e.target as HTMLElement).style.display = 'none';
+                  }}
+                  />
+                <span className="text-xl font-bold">
+                  <span className="text-orange-500">Smart</span> Canteen
+                </span>
               </div>
-              <span className="text-xl font-bold">
-                <span className="text-orange-500">Smart</span> Canteen
-              </span>
+
+              {/* Logout Button (Mobile Only) */}
+              <button 
+                className="flex lg:hidden items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-red-500 transition-colors"
+                title="Keluar"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Keluar</span>
+              </button>
             </div>
 
             {/* Profile Card */}
-            <div className="mb-8 flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-3 shadow-sm">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200">
+            <div className="mb-4 lg:mb-8 flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-3 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 shrink-0">
                 <Users className="h-5 w-5 text-slate-600" />
               </div>
               <div>
@@ -43,80 +59,80 @@ export default function LaporanAdmin() {
             </div>
 
             {/* Navigation Menu */}
-            <nav className="flex flex-col gap-3">
+            <nav className="flex lg:flex-col gap-2 sm:gap-3 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
               <Link
-               href="/admin-aplikasi/dasboard-aplikasi"
-               className="flex w-full items-center justify-center rounded-full border border-orange-200 bg-white py-2.5 font-semibold text-orange-500 transition-colors hover:bg-orange-50">
+                href="/admin-aplikasi/dasboard-aplikasi"
+                className="flex shrink-0 lg:w-full items-center justify-center rounded-full border border-orange-200 bg-white px-5 lg:px-0 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-orange-500 transition-colors hover:bg-orange-50">
                 Dashboard
               </Link>
               <Link 
                 href="/admin-aplikasi/kelola-kantin"
-                className="flex w-full items-center justify-center rounded-full border border-orange-200 bg-white py-2.5 font-semibold text-orange-500 transition-colors hover:bg-orange-50">
+                className="flex shrink-0 lg:w-full items-center justify-center rounded-full border border-orange-200 bg-white px-5 lg:px-0 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-orange-500 transition-colors hover:bg-orange-50">
                 Kelola Kantin
-            </Link>
-            <Link 
+              </Link>
+              <Link 
                 href="/admin-aplikasi/kelola-user"
-                className="flex w-full items-center justify-center rounded-full border border-orange-200 bg-white py-2.5 font-semibold text-orange-500 transition-colors hover:bg-orange-50">
+                className="flex shrink-0 lg:w-full items-center justify-center rounded-full border border-orange-200 bg-white px-5 lg:px-0 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-orange-500 transition-colors hover:bg-orange-50">
                 Kelola User
-            </Link>
-            <Link 
+              </Link>
+              <Link 
                 href="/admin-aplikasi/laporan-admin"
-                className="flex w-full items-center justify-center rounded-full border border-orange-200 bg-white py-2.5 font-semibold text-orange-500 transition-colors hover:bg-orange-50">
+                className="flex shrink-0 lg:w-full items-center justify-center rounded-full border border-orange-200 bg-white px-5 lg:px-0 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-orange-500 transition-colors hover:bg-orange-50">
                 Laporan
-            </Link>
+              </Link>
             </nav>
           </div>
 
-          {/* Logout Button */}
-          <button className="flex items-center gap-3 font-semibold text-slate-700 transition-colors hover:text-red-500 px-2">
+          {/* Logout Button (Desktop Only) */}
+          <button className="hidden lg:flex items-center gap-3 font-semibold text-slate-700 transition-colors hover:text-red-500 px-2 mt-6">
             <LogOut className="h-5 w-5" />
             <span>Keluar</span>
           </button>
         </aside>
 
         {/* ================= MAIN CONTENT ================= */}
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {/* Header Title */}
-          <header className="mb-6">
-            <h1 className="text-2xl font-bold text-slate-900">Laporan</h1>
+          <header className="mb-4 sm:mb-6">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Laporan</h1>
           </header>
 
           {/* Metric Cards Section */}
-          <div className="mb-6 grid grid-cols-4 gap-4">
+          <div className="mb-6 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {/* Total Transaksi */}
-            <div className="rounded-2xl border border-slate-200 p-4">
-              <span className="text-xs font-bold text-slate-800">Total Transaksi</span>
-              <div className="mt-2 text-3xl font-extrabold text-slate-900">1.180</div>
+            <div className="rounded-2xl border border-slate-200 p-3.5 sm:p-4">
+              <span className="text-[11px] sm:text-xs font-bold text-slate-800">Total Transaksi</span>
+              <div className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-extrabold text-slate-900">1.180</div>
             </div>
 
             {/* Rata-rata/Hari */}
-            <div className="rounded-2xl border border-slate-200 p-4">
-              <span className="text-xs font-bold text-slate-800">Rata-rata/Hari</span>
-              <div className="mt-2 text-3xl font-extrabold text-slate-900">41</div>
+            <div className="rounded-2xl border border-slate-200 p-3.5 sm:p-4">
+              <span className="text-[11px] sm:text-xs font-bold text-slate-800">Rata-rata/Hari</span>
+              <div className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-extrabold text-slate-900">41</div>
             </div>
 
             {/* Total Pesanan */}
-            <div className="rounded-2xl border border-slate-200 p-4">
-              <span className="text-xs font-bold text-slate-800">Total Pesanan</span>
-              <div className="mt-2 text-3xl font-extrabold text-orange-500">1.250</div>
+            <div className="rounded-2xl border border-slate-200 p-3.5 sm:p-4">
+              <span className="text-[11px] sm:text-xs font-bold text-slate-800">Total Pesanan</span>
+              <div className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-extrabold text-orange-500">1.250</div>
             </div>
 
             {/* Total Pendapatan */}
-            <div className="rounded-2xl border border-slate-200 p-4">
-              <span className="text-xs font-bold text-slate-800">Total Pendapatan</span>
-              <div className="mt-2 text-lg font-extrabold text-emerald-600">Rp 12.500.000</div>
+            <div className="rounded-2xl border border-slate-200 p-3.5 sm:p-4">
+              <span className="text-[11px] sm:text-xs font-bold text-slate-800">Total Pendapatan</span>
+              <div className="mt-1.5 sm:mt-2 text-base sm:text-lg font-extrabold text-emerald-600">Rp 12.500.000</div>
             </div>
           </div>
 
           {/* Middle Section: Chart & Top Canteen */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Bar Chart Section */}
-            <div className="col-span-2 flex flex-col justify-between rounded-2xl border border-slate-200 p-5">
-              <h3 className="mb-4 text-sm font-bold text-slate-800">Grafik Pesanan</h3>
+            <div className="lg:col-span-2 flex flex-col justify-between rounded-2xl border border-slate-200 p-4 sm:p-5">
+              <h3 className="mb-3 sm:mb-4 text-xs sm:text-sm font-bold text-slate-800">Grafik Pesanan</h3>
 
               {/* Bar Chart Visualization (SVG) */}
-              <div className="h-56 w-full">
-                <svg className="h-full w-full overflow-visible" viewBox="0 0 450 160">
+              <div className="h-48 sm:h-56 w-full">
+                <svg className="h-full w-full overflow-visible" viewBox="0 0 450 160" preserveAspectRatio="none">
                   {/* Grid Lines */}
                   <line x1="30" y1="20" x2="430" y2="20" stroke="#f1f5f9" strokeWidth="1" />
                   <line x1="30" y1="60" x2="430" y2="60" stroke="#f1f5f9" strokeWidth="1" />
@@ -143,7 +159,7 @@ export default function LaporanAdmin() {
                 </svg>
 
                 {/* X-Axis Labels */}
-                <div className="mt-2 flex justify-between pl-8 pr-4 text-[10px] font-semibold text-slate-700">
+                <div className="mt-2 flex justify-between pl-6 sm:pl-8 pr-2 sm:pr-4 text-[9px] sm:text-[10px] font-semibold text-slate-700">
                   <span>Minggu Ke-1</span>
                   <span>Minggu Ke-2</span>
                   <span>Minggu Ke-3</span>
@@ -152,22 +168,22 @@ export default function LaporanAdmin() {
               </div>
 
               {/* Date Indicator Label */}
-              <div className="mt-4 text-right text-[11px] font-semibold text-slate-600">
-                21-25Mei
+              <div className="mt-4 text-right text-[10px] sm:text-[11px] font-semibold text-slate-600">
+                21-25 Mei
               </div>
             </div>
 
             {/* Kantin Terlaris Table */}
             <div className="rounded-2xl border border-slate-200 p-4">
-              <h3 className="mb-4 text-center text-sm font-bold text-slate-800">Kantin Terlaris</h3>
+              <h3 className="mb-3 sm:mb-4 text-center text-xs sm:text-sm font-bold text-slate-800">Kantin Terlaris</h3>
               
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <tbody className="divide-y divide-slate-100">
                     {kantinTerlaris.map((item, index) => (
                       <tr key={index}>
-                        <td className="py-3 font-semibold text-slate-800">{item.nama}</td>
-                        <td className="py-3 text-right font-bold text-slate-900">{item.total}</td>
+                        <td className="py-2.5 sm:py-3 font-semibold text-slate-800 whitespace-nowrap pr-2">{item.nama}</td>
+                        <td className="py-2.5 sm:py-3 text-right font-bold text-slate-900 whitespace-nowrap">{item.total}</td>
                       </tr>
                     ))}
                   </tbody>
