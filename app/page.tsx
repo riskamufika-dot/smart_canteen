@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Image from "next/image";
 
 export default function Home() {
@@ -63,3 +64,11 @@ export default function Home() {
     </div>
   );
 }
+=======
+import { redirect } from 'next/navigation';
+
+export default function RootPage() {
+  // Langsung arahkan user ke URL /login
+  redirect('/login');
+}
+>>>>>>> fb772c414c78a934e9b4b121ed184ef285537f53
