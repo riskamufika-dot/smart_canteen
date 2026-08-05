@@ -1,19 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
- allowedDevOrigins: ["192.168.1.67:3000", "192.168.1.67"],
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["192.168.1.67:3000", "192.168.1.67"],
+    },
+  },
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '1337',
-        pathname: '/uploads/**',
+        protocol: "http",
+        hostname: "localhost",
+        port: "1337",
+        pathname: "/uploads/**",
       },
     ],
   },
+};
 
 export default nextConfig;
