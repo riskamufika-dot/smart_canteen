@@ -121,38 +121,41 @@ export default function KeranjangPage() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white font-sans text-gray-900 flex flex-col justify-between">
+    <div className="w-full min-h-screen bg-blue-600 font-sans text-gray-900 flex flex-col justify-between p-3 sm:p-6 md:p-8 transition-all duration-300">
       
-      {/* KONTEN UTAMA */}
-      <div className="w-full py-6 px-4 sm:px-8 space-y-6 pb-28">
+      {/* KONTEN UTAMA IN CARD */}
+      <div className="max-w-4xl mx-auto w-full bg-white/95 backdrop-blur-md border border-blue-100 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl space-y-6 pb-28 mb-4">
         
         {/* HEADER ATAS */}
         <div className="flex items-center justify-between pb-4 border-b border-gray-100">
           <button
             onClick={() => router.back()}
-            className="text-gray-900 hover:text-orange-500 transition-colors p-1 -ml-1"
+            className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors p-2 rounded-full -ml-2"
+            aria-label="Kembali"
           >
-            <ArrowLeft size={26} />
+            <ArrowLeft size={24} />
           </button>
 
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
             Keranjang
           </h1>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button
               onClick={() => router.push('/home')}
-              className="text-gray-900 hover:text-orange-500 transition-colors p-1"
+              className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors p-2 rounded-full"
+              aria-label="Home"
             >
-              <Home size={24} />
+              <Home size={22} />
             </button>
             {cartItems.length > 0 && (
               <button
                 onClick={clearCart}
-                className="text-gray-900 hover:text-red-500 transition-colors p-1"
+                className="text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors p-2 rounded-full"
                 title="Kosongkan Keranjang"
+                aria-label="Kosongkan Keranjang"
               >
-                <Trash2 size={24} />
+                <Trash2 size={22} />
               </button>
             )}
           </div>
@@ -162,17 +165,17 @@ export default function KeranjangPage() {
           <div className="space-y-6 pt-2">
             
             {/* OPSI PILIH SEMUA */}
-            <div className="flex items-center justify-between bg-gray-50 px-4 py-3 rounded-2xl border border-gray-100">
+            <div className="flex items-center justify-between bg-blue-50/60 px-4 py-3 rounded-2xl border border-blue-100">
               <label className="flex items-center gap-3 cursor-pointer font-semibold text-sm sm:text-base text-gray-800">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleSelectAll}
-                  className="w-5 h-5 accent-[#52C453] rounded cursor-pointer"
+                  className="w-5 h-5 accent-blue-600 rounded cursor-pointer"
                 />
                 Pilih Semua ({cartItems.length} Makanan)
               </label>
-              <span className="text-xs sm:text-sm text-gray-400">
+              <span className="text-xs sm:text-sm text-blue-700 font-medium">
                 {selectedItems.length} Terpilih
               </span>
             </div>
@@ -193,7 +196,7 @@ export default function KeranjangPage() {
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => toggleSelectItem(item.id)}
-                        className="w-5 h-5 accent-[#52C453] rounded cursor-pointer shrink-0"
+                        className="w-5 h-5 accent-blue-600 rounded cursor-pointer shrink-0"
                       />
 
                       <img
@@ -221,14 +224,14 @@ export default function KeranjangPage() {
                     </div>
 
                     <div className="flex flex-col items-end gap-3 shrink-0">
-                      <span className="text-base sm:text-lg font-bold text-[#F28728]">
+                      <span className="text-base sm:text-lg font-bold text-blue-600">
                         Rp {itemSubtotal.toLocaleString('id-ID')}
                       </span>
 
-                      <div className="flex items-center bg-gray-100 rounded-xl px-2.5 py-1 gap-2 border border-gray-200">
+                      <div className="flex items-center bg-blue-50/70 rounded-xl px-2.5 py-1 gap-2 border border-blue-100">
                         <button
                           onClick={() => updateQuantity(item.id, -1)}
-                          className="p-0.5 text-gray-700 hover:text-black font-bold transition-colors"
+                          className="p-0.5 text-gray-700 hover:text-blue-700 font-bold transition-colors"
                         >
                           <Minus size={13} />
                         </button>
@@ -237,7 +240,7 @@ export default function KeranjangPage() {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, 1)}
-                          className="p-0.5 text-gray-700 hover:text-black font-bold transition-colors"
+                          className="p-0.5 text-gray-700 hover:text-blue-700 font-bold transition-colors"
                         >
                           <Plus size={13} />
                         </button>
@@ -266,7 +269,7 @@ export default function KeranjangPage() {
                       min={todayStr}
                       value={pickupDate}
                       onChange={(e) => setPickupDate(e.target.value)}
-                      className="w-full bg-white border border-gray-300 rounded-2xl pl-12 pr-4 py-3.5 text-sm sm:text-base font-medium text-gray-900 outline-none focus:border-green-500 cursor-pointer shadow-sm"
+                      className="w-full bg-white border border-gray-300 rounded-2xl pl-12 pr-4 py-3.5 text-sm sm:text-base font-medium text-gray-900 outline-none focus:border-blue-500 cursor-pointer shadow-sm"
                     />
                   </div>
                 </div>
@@ -283,7 +286,7 @@ export default function KeranjangPage() {
                     <select
                       value={pickupTime}
                       onChange={(e) => setPickupTime(e.target.value)}
-                      className="w-full bg-white border border-gray-300 rounded-2xl pl-12 pr-10 py-3.5 text-sm sm:text-base font-medium text-gray-900 outline-none appearance-none focus:border-green-500 cursor-pointer shadow-sm"
+                      className="w-full bg-white border border-gray-300 rounded-2xl pl-12 pr-10 py-3.5 text-sm sm:text-base font-medium text-gray-900 outline-none appearance-none focus:border-blue-500 cursor-pointer shadow-sm"
                     >
                       {timeSlots.map((slot, index) => (
                         <option key={index} value={slot} className="text-gray-900">
@@ -304,14 +307,14 @@ export default function KeranjangPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <div className="w-5 h-5 rounded-full bg-gray-900 text-white flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center">
                         <DollarSign size={13} className="stroke-[3]" />
                       </div>
                     </div>
                     <select
                       value={paymentMethod}
                       onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="w-full bg-white border border-gray-300 rounded-2xl pl-12 pr-10 py-3.5 text-sm sm:text-base font-medium text-gray-900 outline-none appearance-none focus:border-green-500 cursor-pointer shadow-sm"
+                      className="w-full bg-white border border-gray-300 rounded-2xl pl-12 pr-10 py-3.5 text-sm sm:text-base font-medium text-gray-900 outline-none appearance-none focus:border-blue-500 cursor-pointer shadow-sm"
                     >
                       <option value="Cash" className="text-gray-900">
                         Cash
@@ -327,9 +330,9 @@ export default function KeranjangPage() {
                 </div>
 
                 {/* BANNER PERINGATAN */}
-                <div className="flex items-center gap-3 bg-[#E5E7EB] rounded-full px-5 py-3.5 w-full">
+                <div className="flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-2xl px-5 py-3.5 w-full">
                   <svg
-                    className="w-6 h-6 text-gray-900 shrink-0"
+                    className="w-6 h-6 text-blue-600 shrink-0"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="1.8"
@@ -339,7 +342,7 @@ export default function KeranjangPage() {
                     <line x1="12" y1="8" x2="12" y2="12" strokeWidth="1.8" strokeLinecap="round" />
                     <line x1="12" y1="15.5" x2="12" y2="16" strokeWidth="2.5" strokeLinecap="round" />
                   </svg>
-                  <p className="text-xs sm:text-sm text-gray-900 font-semibold leading-relaxed">
+                  <p className="text-xs sm:text-sm text-blue-900 font-semibold leading-relaxed">
                     Apakah anda yakin pesanan anda sudah benar? Mohon untuk cek kembali pesanan anda.
                   </p>
                 </div>
@@ -352,7 +355,7 @@ export default function KeranjangPage() {
             <p className="text-base font-medium">Keranjang kamu masih kosong.</p>
             <button
               onClick={() => router.push('/home')}
-              className="mt-4 rounded-xl bg-[#52C453] px-6 py-2.5 text-white font-bold text-sm hover:bg-[#43b044] transition-all shadow-sm"
+              className="mt-4 rounded-xl bg-blue-600 px-6 py-2.5 text-white font-bold text-sm hover:bg-blue-700 transition-all shadow-sm"
             >
               Cari Makanan
             </button>
@@ -362,14 +365,16 @@ export default function KeranjangPage() {
 
       {/* STICKY BOTTOM BAR */}
       {cartItems.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 sm:px-8 py-3 shadow-lg z-50">
-          <button
-            onClick={handleCreateOrder}
-            disabled={loading}
-            className="w-full rounded-2xl bg-[#52C453] hover:bg-[#43b044] py-4 font-bold text-white text-base sm:text-lg transition-all active:scale-[0.99] text-center cursor-pointer shadow-sm"
-          >
-            {loading ? 'Memproses Pesanan...' : 'Buat Pesanan'}
-          </button>
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-blue-100 px-4 sm:px-8 py-3 shadow-2xl z-50">
+          <div className="max-w-4xl mx-auto">
+            <button
+              onClick={handleCreateOrder}
+              disabled={loading}
+              className="w-full rounded-2xl bg-blue-600 hover:bg-blue-700 py-4 font-bold text-white text-base sm:text-lg transition-all active:scale-[0.99] text-center cursor-pointer shadow-md"
+            >
+              {loading ? 'Memproses Pesanan...' : 'Buat Pesanan'}
+            </button>
+          </div>
         </div>
       )}
 

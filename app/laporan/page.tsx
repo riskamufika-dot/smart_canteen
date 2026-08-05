@@ -1,108 +1,135 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 
-// 1. Definisi Tipe Data untuk Baris Laporan
-interface LaporanItem {
+interface MenuReport {
   no: number;
-  namaMenu: string;
+  nama: string;
   jumlahTerjual: number;
-  totalPendapatan: string;
+  totalPendapatan: number;
+}
+
+const laporanData: MenuReport[] = [
+  { no: 1, nama: 'Mie Bakso', jumlahTerjual: 60, totalPendapatan: 480000 },
+  { no: 2, nama: 'Mie Campur', jumlahTerjual: 25, totalPendapatan: 200000 },
+  { no: 3, nama: 'Mie Yamin', jumlahTerjual: 30, totalPendapatan: 280000 },
+];
+
+const menuTerlarisData: MenuReport[] = [
+  { no: 1, nama: 'Mie Bakso', jumlahTerjual: 60, totalPendapatan: 480000 },
+  { no: 2, nama: 'Mie Campur', jumlahTerjual: 25, totalPendapatan: 200000 },
+];
+
+function formatRupiah(value: number) {
+  return `Rp ${value.toLocaleString('id-ID')}`;
 }
 
 export default function LaporanPage() {
-  // Data dummy untuk tabel laporan utama
-  const dataLaporan: LaporanItem[] = [
-    { no: 1, namaMenu: 'Mie Bakso', jumlahTerjual: 60, totalPendapatan: 'Rp 480.000' },
-    { no: 2, namaMenu: 'Mie Campur', jumlahTerjual: 25, totalPendapatan: 'Rp 200.000' },
-    { no: 3, namaMenu: 'Mie Yamin', jumlahTerjual: 30, totalPendapatan: 'Rp 280.000' },
-  ];
+  const router = useRouter();
 
-  // Data dummy untuk tabel menu terlaris
-  const dataTerlaris: LaporanItem[] = [
-    { no: 1, namaMenu: 'Mie Bakso', jumlahTerjual: 60, totalPendapatan: 'Rp 480.000' },
-    { no: 2, namaMenu: 'Mie Campur', jumlahTerjual: 25, totalPendapatan: 'Rp 200.000' },
-  ];
-
-  const totalKeseluruhan = "Rp 920.000";
+  const totalKeseluruhan = laporanData.reduce(
+    (sum, item) => sum + item.totalPendapatan,
+    0
+  );
 
   return (
-    <div className="min-h-screen bg-slate-50 p-10 font-sans text-slate-800">
-      <div className="w-full bg-white border border-slate-100 rounded-3xl p-8 shadow-sm">
-        
-        {/* Header Section */}
-        <div className="flex items-center gap-4 mb-8">
-          <Link 
-            href="/dasboard-admin" 
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-700"
+    <div className="min-h-screen w-full bg-[#F5F5F5] flex flex-col">
+      <div className="flex-1 w-full max-w-5xl mx-auto px-4 py-5 sm:px-8 sm:py-8 flex flex-col">
+
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-5 sm:mb-8 shrink-0">
+          <button
+            type="button"
+            onClick={() => router.push('/dasboard-admin')}
+            aria-label="Kembali ke dashboard admin"
+            className="p-2 -ml-2 rounded-lg hover:bg-gray-200 transition-colors shrink-0"
           >
-            <ArrowLeft size={24} />
-          </Link>
-          <h1 className="text-2xl font-bold text-slate-900">Laporan</h1>
+            <ArrowLeft className="w-6 h-6 sm:w-7 sm:h-7 text-black" />
+          </button>
+          <h1 className="text-2xl sm:text-3xl font-bold text-black">Laporan</h1>
         </div>
 
         {/* Tabel Laporan Utama */}
-        <div className="border border-slate-200 rounded-2xl overflow-hidden mb-8 shadow-sm">
-          <table className="w-full text-left border-collapse">
+        <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 mb-5 sm:mb-8 overflow-x-auto">
+          <table className="w-full min-w-[420px] border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/50 text-slate-900 font-bold text-sm">
-                <th className="p-4 pl-6 text-center w-16">No.</th>
-                <th className="p-4">Nama Menu</th>
-                <th className="p-4 text-center">Jumlah Item Terjual</th>
-                <th className="p-4 text-right pr-10">Total Pendapatan</th>
+              <tr className="border-b border-gray-200">
+                <th className="text-left font-bold text-sm sm:text-base text-black py-3 px-2 sm:px-4">
+                  No.
+                </th>
+                <th className="text-left font-bold text-sm sm:text-base text-black py-3 px-2 sm:px-4">
+                  Nama Menu
+                </th>
+                <th className="text-right sm:text-center font-bold text-sm sm:text-base text-black py-3 px-2 sm:px-4">
+                  Jumlah Item Terjual
+                </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-sm font-semibold text-slate-700">
-              {dataLaporan.map((item) => (
-                <tr key={item.no}>
-                  <td className="p-4 text-center pl-6">{item.no}.</td>
-                  <td className="p-4 text-slate-900 font-bold">{item.namaMenu}</td>
-                  <td className="p-4 text-center">{item.jumlahTerjual}</td>
-                  <td className="p-4 text-right pr-10">{item.totalPendapatan}</td>
+            <tbody>
+              {laporanData.map((item) => (
+                <tr key={item.no} className="border-b border-gray-100">
+                  <td className="py-4 px-2 sm:px-4 text-sm sm:text-base text-black">
+                    {item.no}.
+                  </td>
+                  <td className="py-4 px-2 sm:px-4 text-sm sm:text-base text-black">
+                    {item.nama}
+                  </td>
+                  <td className="py-4 px-2 sm:px-4 text-sm sm:text-base text-black text-right sm:text-center">
+                    {item.jumlahTerjual}
+                  </td>
                 </tr>
               ))}
             </tbody>
-            {/* Footer Tabel - Total Keseluruhan */}
-            <tfoot className="bg-slate-50/30">
-              <tr>
-                <td colSpan={2} className="p-5 pl-6 font-extrabold text-green-600 text-base">
-                  Total Keseluruhan
-                </td>
-                <td colSpan={2} className="p-5 pr-10 text-right font-extrabold text-green-600 text-base">
-                  {totalKeseluruhan}
-                </td>
-              </tr>
-            </tfoot>
           </table>
+
+          {/* Total Keseluruhan - selalu sejajar kiri-kanan */}
+          <div className="flex flex-row items-center justify-between gap-3 pt-5 mt-2">
+            <span className="text-green-600 font-bold text-base sm:text-xl">
+              Total Keseluruhan
+            </span>
+            <span className="text-green-600 font-bold text-lg sm:text-2xl whitespace-nowrap">
+              {formatRupiah(totalKeseluruhan)}
+            </span>
+          </div>
         </div>
 
-        {/* Menu Terlaris Section */}
-        <div className="mt-10">
-          <h2 className="text-lg font-bold text-slate-900 mb-4 px-2">Menu Terlaris</h2>
-          <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-slate-200 bg-slate-50/50 text-slate-900 font-bold text-sm">
-                  <th className="p-4 pl-6 text-center w-16">No.</th>
-                  <th className="p-4">Nama Menu</th>
-                  <th className="p-4 text-center">Jumlah Item Terjual</th>
-                  <th className="p-4 text-right pr-10">Total Pendapatan</th>
+        {/* Menu Terlaris */}
+        <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 flex-1 overflow-x-auto">
+          <h2 className="text-lg sm:text-xl font-bold text-black mb-4">
+            Menu Terlaris
+          </h2>
+          <table className="w-full min-w-[420px] border-collapse">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="text-left font-bold text-sm sm:text-base text-black py-3 px-2 sm:px-4">
+                  No.
+                </th>
+                <th className="text-left font-bold text-sm sm:text-base text-black py-3 px-2 sm:px-4">
+                  Nama Menu
+                </th>
+                <th className="text-right sm:text-center font-bold text-sm sm:text-base text-black py-3 px-2 sm:px-4">
+                  Jumlah Item Terjual
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {menuTerlarisData.map((item) => (
+                <tr key={item.no} className="border-b border-gray-100 last:border-b-0">
+                  <td className="py-4 px-2 sm:px-4 text-sm sm:text-base text-black">
+                    {item.no}.
+                  </td>
+                  <td className="py-4 px-2 sm:px-4 text-sm sm:text-base text-black">
+                    {item.nama}
+                  </td>
+                  <td className="py-4 px-2 sm:px-4 text-sm sm:text-base text-black text-right sm:text-center">
+                    {item.jumlahTerjual}
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 text-sm font-semibold text-slate-700">
-                {dataTerlaris.map((item) => (
-                  <tr key={item.no}>
-                    <td className="p-4 text-center pl-6">{item.no}.</td>
-                    <td className="p-4 text-slate-900 font-bold">{item.namaMenu}</td>
-                    <td className="p-4 text-center">{item.jumlahTerjual}</td>
-                    <td className="p-4 text-right pr-10">{item.totalPendapatan}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
 
       </div>
